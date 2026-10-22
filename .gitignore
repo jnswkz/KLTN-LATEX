@@ -1,0 +1,29 @@
+# Thư mục build do LaTeX/latexmk sinh ra
+build/
+
+# Sản phẩm biên dịch trung gian
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# PDF sinh ra (CI tự build lại); giữ lại ảnh nguồn trong misc/
+*.pdf
+!misc/uit_logo.pdf
+
+# Hệ điều hành / editor
+.DS_Store
+Thumbs.db

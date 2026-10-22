@@ -1,0 +1,72 @@
+name: Build LaTeX & Deploy Preview
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cho phép job deploy ghi lên GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Hủy các lần chạy cũ khi có push mới cùng branch
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Biên dịch LaTeX
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Biên dịch main.tex (latexmk + biber)
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          # latexmk mặc định dùng pdflatex, tự chạy đủ pass + biber
+          latexmk_shell_escape: true
+          # Dùng TeX Live full để có đủ package (vntex/T5, tikz, siunitx, ...)
+          texlive_version: 2024
+
+      - name: Gom sản phẩm deploy (PDF + trang preview)
+        run: |
+          mkdir -p public
+          cp main.pdf public/main.pdf
+          cp web/index.html public/index.html
+          # Chèn thời gian build (UTC+7) vào trang preview
+          BUILD_TIME="$(TZ=Asia/Ho_Chi_Minh date '+%d/%m/%Y %H:%M (GMT+7)')"
+          sed -i "s|__BUILD_TIME__|${BUILD_TIME}|g" public/index.html
+
+      - name: Tải PDF làm artifact của run
+        uses: actions/upload-artifact@v4
+        with:
+          name: thesis-pdf
+          path: main.pdf
+          if-no-files-found: error
+
+      - name: Đóng gói artifact cho Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    name: Xuất bản GitHub Pages
+    # Chỉ deploy khi push lên main (PR chỉ build kiểm tra)
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy lên GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
