@@ -142,6 +142,17 @@
 % \usepackage{physics}
 \usepackage{mathtools} % for '\mathrlap' and '\DeclarePairedDelimiter' macros
 
+% Lề chuẩn UIT (3.5/2/3/3.5 cm): áp dụng LẠI sau uit-thesis.sty để không bị
+% các lệnh \oddsidemargin/\textwidth/\textheight trong .sty ghi đè gây lệch khung.
+\geometry{
+	a4paper,
+	left=1.38in,
+	right=0.79in,
+	top=1.18in,
+	bottom=1.38in,
+	headheight=32pt
+}
+
 \makeatletter
 
 % Đổi màu các từ link đến từ danh mục từ viết tắt thành đen
