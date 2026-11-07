@@ -68,5 +68,15 @@ Khóa luận giới hạn phạm vi nghiên cứu như sau:
 
 \section{Phương pháp nghiên cứu}
 
+Để đạt được các mục tiêu đề ra, khóa luận kết hợp giữa nghiên cứu lý thuyết và xây dựng, thực nghiệm hệ thống thực tế, được triển khai qua các bước sau:
+
+\begin{itemize}
+    \item \textbf{Khảo sát và tổng thuật tài liệu:} nghiên cứu các công trình tiêu biểu về phát hiện tấn công dựa trên đồ thị nguồn gốc và học máy (UNICORN \cite{han2020unicorn}, ATLAS \cite{alsaheel2021atlas}, ShadeWatcher \cite{zeng2022shadewatcher}), cùng cơ chế giám sát mức nhân của Windows \cite{russinovich2021windows}, nhằm kế thừa ưu điểm và xác định khoảng trống nghiên cứu.
+    \item \textbf{Thiết kế kiến trúc:} đề xuất kiến trúc tác tử tự hành gồm ba tầng xử lý: (i) tầng nền tảng thu thập telemetry và duy trì đồ thị phả hệ tiến trình trong bộ nhớ; (ii) tầng phân tích song song gồm động cơ luật (biên dịch luật Sigma \cite{sigmahq} sang dạng thực thi hiệu năng cao) và động cơ trí tuệ nhân tạo biên; (iii) tầng hợp nhất quyết định để tính điểm rủi ro và kích hoạt phản ứng.
+    \item \textbf{Xây dựng và huấn luyện mô hình:} trích xuất đặc trưng hành vi tiến trình, huấn luyện mô hình học máy ngoại tuyến trên ngôn ngữ Python, sau đó nén và chuyển đổi sang định dạng ONNX để nhúng vào tác tử, đảm bảo suy diễn cục bộ theo thời gian thực.
+    \item \textbf{Hiện thực hóa hệ thống:} lập trình tác tử dưới dạng Windows Service bằng C++, tích hợp các thành phần thu thập, phân tích, hợp nhất quyết định và phản ứng thành một phần mềm hoàn chỉnh.
+    \item \textbf{Thực nghiệm và đánh giá:} mô phỏng các kịch bản tấn công theo ma trận MITRE ATT\&CK \cite{mitre_attack} trên môi trường Windows ảo hóa, đo lường hiệu quả hệ thống qua các độ đo về năng lực phát hiện, tỷ lệ báo động giả, độ trễ đáp ứng và mức tiêu thụ tài nguyên máy trạm.
+\end{itemize}
+
 \section{Cấu trúc khóa luận}
 % Giới thiệu ngắn gọn nội dung từng chương.
